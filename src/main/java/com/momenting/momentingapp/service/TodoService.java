@@ -33,6 +33,7 @@ public class TodoService {
         validate(entity);
 
         todoRepository.save(entity);
+
         log.info("Entity Id : {} is saved.", entity.getId());
         return todoRepository.findByUserId(entity.getUserId());
     }
