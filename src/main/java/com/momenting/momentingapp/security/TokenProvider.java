@@ -1,6 +1,6 @@
 package com.momenting.momentingapp.security;
 
-import com.momenting.momentingapp.model.UserEntity;
+import com.momenting.momentingapp.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,7 +17,7 @@ public class TokenProvider {
 
     private static final String SECRET_KEY = "NMA8JPctFuna59f5";
 
-    public String create(UserEntity userEntity) {
+    public String create(User user) {
 
         //토큰의 기한 설정
         Date expiryDate = Date.from(
@@ -30,7 +30,7 @@ public class TokenProvider {
                 // header에 들어갈 내용 및 서명을 하기 위한 SECRET_KEY
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 // payload에 들어갈 내용
-                .setSubject(userEntity.getId()) // sub
+                .setSubject(user.getId()) // sub
                 .setIssuer("demo app") // iss
                 .setIssuedAt(new Date()) // iat
                 .setExpiration(expiryDate) // exp

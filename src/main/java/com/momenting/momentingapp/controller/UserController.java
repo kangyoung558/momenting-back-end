@@ -2,7 +2,7 @@ package com.momenting.momentingapp.controller;
 
 import com.momenting.momentingapp.dto.ResponseDto;
 import com.momenting.momentingapp.dto.UserDto;
-import com.momenting.momentingapp.model.UserEntity;
+import com.momenting.momentingapp.model.User;
 import com.momenting.momentingapp.security.TokenProvider;
 import com.momenting.momentingapp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,14 +32,14 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
         try {
             //요청을 이용해 저장할 사용자 만들기
-            UserEntity user = UserEntity.builder()
+            User user = User.builder()
                     .email(userDto.getEmail())
                     .username(userDto.getUsername())
                     .password(passwordEncoder.encode(userDto.getPassword()))
                     .build();
 
             //서비스를 이용해 리포지터리에 저장
-            UserEntity registerUser = userService.create(user);
+            User registerUser = userService.create(user);
 
             // 사용자 정보는 항상 하나이므로 리스트로 만들어야 하는 ResponseDto를 사용하지 않고 UserDto를 리턴
             UserDto reponseUserDto = UserDto.builder()
@@ -57,7 +57,7 @@ public class UserController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserDto userDto) {
-        UserEntity user = userService.getByCredentials(userDto.getEmail(), userDto.getPassword(), passwordEncoder);
+        User user = userService.getByCredentials(userDto.getEmail(), userDto.getPassword(), passwordEncoder);
 
         if (user != null) {
             //Token 생성

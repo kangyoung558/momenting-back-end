@@ -1,9 +1,6 @@
 package com.momenting.momentingapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -12,9 +9,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "tbl_user", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-public class UserEntity extends BaseTimeEntity{
+public class User extends BaseTimeEntity{
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -28,4 +26,6 @@ public class UserEntity extends BaseTimeEntity{
 
     @Column(nullable = false)
     private String username;
+
+
 }

@@ -1,6 +1,7 @@
 package com.momenting.momentingapp.service;
 
-import com.momenting.momentingapp.model.TodoEntity;
+import com.momenting.momentingapp.dto.TodoDto;
+import com.momenting.momentingapp.model.Todo;
 import com.momenting.momentingapp.persistence.TodoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,36 +19,39 @@ public class TodoService {
     private TodoRepository todoRepository;
 
     public String testService() {
-        TodoEntity entity = TodoEntity.builder()
+        Todo entity = Todo.builder()
                 .content("첫번째 투두 리스트")
                 .endDate(LocalDate.of(2021,10,20))
                 .build();
         todoRepository.save(entity);
-        TodoEntity savedEntity = todoRepository.findById(entity.getId()).get();
+        Todo savedEntity = todoRepository.findById(entity.getId()).get();
         return savedEntity.getContent();
     }
     
     //todo생성
-    public List<TodoEntity> create(final TodoEntity entity) {
+    public TodoDto create(final Todo entity) {
         // Validations
         validate(entity);
 
         todoRepository.save(entity);
 
         log.info("Entity Id : {} is saved.", entity.getId());
-        return todoRepository.findByUserId(entity.getUserId());
+
+        String savedTodoId = entity.getId();
+
+        return findById(savedTodoId);
     }
 
     //검색
-    public List<TodoEntity> retrieve(final String userId) {
+    public List<Todo> retrieve(final String userId) {
         return todoRepository.findByUserId(userId);
     }
 
     //수정 구현
-    public List<TodoEntity> update(final TodoEntity entity) {
+    public List<Todo> update(final Todo entity) {
         validate(entity);
 
-        final Optional<TodoEntity> original = todoRepository.findById(entity.getId());
+        final Optional<Todo> original = todoRepository.findById(entity.getId());
 
         original.ifPresent(todo -> {
             todo.setTitle(entity.getTitle());
@@ -61,7 +65,7 @@ public class TodoService {
     }
     
     //삭제 구현
-    public List<TodoEntity> delete(final TodoEntity entity) {
+    public List<Todo> delete(final Todo entity) {
         validate(entity);
         try{
             todoRepository.delete(entity);
@@ -72,7 +76,12 @@ public class TodoService {
         return retrieve(entity.getUserId());
     }
 
-    private void validate(final TodoEntity entity) {
+    public TodoDto findById(String id) {
+        Todo todo = todoRepository.findById(id).get();
+        return new TodoDto(todo);
+    }
+
+    private void validate(final Todo entity) {
         if(entity == null) {
             log.warn("Entity cannot be null.");
             throw new RuntimeException("Entity cannot be null.");
@@ -83,7 +92,8 @@ public class TodoService {
             throw new RuntimeException("Unknown user.");
         }
     }
-    
+
+
     
 
 }

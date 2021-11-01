@@ -1,12 +1,12 @@
 package com.momenting.momentingapp.persistence;
 
-import com.momenting.momentingapp.model.UserEntity;
+import com.momenting.momentingapp.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, String> {
-    UserEntity findByEmail(String email);
+public interface UserRepository extends JpaRepository<User, String> {
+    User findByEmail(String email);
     Boolean existsByEmail(String email);
-    UserEntity findByEmailAndPassword(String email, String password);
+    User findByEmailAndPassword(String email, String password);
 }

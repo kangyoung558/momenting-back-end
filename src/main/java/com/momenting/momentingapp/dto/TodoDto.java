@@ -1,6 +1,6 @@
 package com.momenting.momentingapp.dto;
 
-import com.momenting.momentingapp.model.TodoEntity;
+import com.momenting.momentingapp.model.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class TodoDto {
     private LocalDate endDate;
     private boolean done;
 
-    public TodoDto(final TodoEntity entity) {
+    public TodoDto(final Todo entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
@@ -30,8 +30,8 @@ public class TodoDto {
         this.done = entity.isDone();
     }
 
-    public static TodoEntity toEntity(final TodoDto dto) {
-        return TodoEntity.builder()
+    public static Todo toEntity(final TodoDto dto) {
+        return Todo.builder()
                 .id(dto.getId())
                 .title(dto.getTitle())
                 .content(dto.getContent())

@@ -1,10 +1,7 @@
 package com.momenting.momentingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,9 +11,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "tbl_todo")
-public class TodoEntity extends  BaseTimeEntity{
+public class Todo extends  BaseTimeEntity{
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -25,9 +23,11 @@ public class TodoEntity extends  BaseTimeEntity{
     private String userId;
     @Column(columnDefinition = "TEXT")
     private String title;
-    @Column(columnDefinition = "TEXT",nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate endDate;
     private boolean done;
+
+
 }
